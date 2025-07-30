@@ -323,7 +323,13 @@ textarea { resize: vertical; }
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
-
+.follow-up-options input[type="radio"] {
+  accent-color: #d32f2f;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+}
 .radio-options {
   display: flex;
   gap: 1.5rem;
@@ -347,9 +353,10 @@ textarea { resize: vertical; }
 .follow-up-options {
   display: flex;
   justify-content: center;
-  align-items: stretch;
-  gap: 1rem;
   flex-wrap: wrap;
+  justify-content: flex-start;  
+  gap: 1rem;
+
 }
 
 .follow-option {
@@ -404,7 +411,7 @@ textarea { resize: vertical; }
 .follow-up-options label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding: 10px 16px;
   border: 2px solid #ccc;
   border-radius: 10px;
