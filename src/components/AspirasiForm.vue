@@ -1,4 +1,14 @@
 <template>
+      <header class="header">
+      <div class="header-content">
+        <img src="/src/assets/logo.png" alt="Logo Showroom" class="logo" />
+        <h1 class="main-title">
+  {{ role === 'customer' ? 'Form Aspirasi Pelanggan' : 'Form Aspirasi Karyawan' }}
+</h1>
+
+      </div>
+
+    </header>
   <h2 class="form-title">Silakan Isi Aspirasi Anda</h2>
   <div class="form-aspirasi">
     <!-- Notifikasi toast -->
@@ -15,13 +25,15 @@
         <input v-model="form.noPolisi" type="text" placeholder="Nomor Polisi" />
         <input
           v-model="form.telepon"
-          type="text"
+          type="tel"
           placeholder="Nomor Telepon"
           @keypress="onlyNumber"
           @input="validateTelepon"
           :class="{ 'input-error': teleponError }"
         />
-        <p v-if="teleponError" class="error-message">Masukkan angka yang valid</p>
+        <div v-if="teleponError" class="input-alert">
+  ⚠️ Harap masukkan angka yang valid (hanya 0-9).
+</div>
 
         <select v-model="form.layanan">
           <option disabled value="">Pilih layanan</option>
@@ -77,6 +89,8 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue'
+
+
 
 const props = defineProps({ role: String })
 const emit = defineEmits(['kembaliKeRole'])
@@ -210,6 +224,56 @@ async function submitForm() {
 </script>
 
 <style scoped>
+.header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: inherit;
+  z-index: 10;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo {
+  width: 40px;
+  height: auto;
+}
+
+.main-title {
+  font-size: 1.5rem;
+  color: #d32f2f;
+  margin: 0;
+}
+
+.input-alert {
+  margin-top: -0.6rem;
+  margin-bottom: 1rem;
+  padding: 8px 12px;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animasi agar alert muncul lembut */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
 .form-aspirasi {
   background: #fff;
   padding: 1.5rem;

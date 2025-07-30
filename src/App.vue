@@ -1,22 +1,5 @@
 <template>
-  <div :class="['app-container', isDarkMode ? 'dark' : 'light']">
-    <header class="header">
-      <div class="header-content">
-        <img src="/src/assets/logo.png" alt="Logo Showroom" class="logo" />
-        <h1 class="main-title">Form Aspirasi Pelanggan</h1>
-      </div>
-      <button class="toggle-dark" @click="toggleDarkMode">
-        {{ isDarkMode ? '🌙' : '☀️' }}
-      </button>
-    </header>
-
-    <svg class="svg-decor top-right" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <path fill="#f8d7da" d="M43.7,-64.7..." transform="translate(100 100)" />
-    </svg>
-    <svg class="svg-decor bottom-left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <path fill="#f8d7da" d="M43.7,-64.7..." transform="translate(100 100)" />
-    </svg>
-
+  <div :class="['app-container']">
     <Homepage />
   </div>
 </template>
@@ -25,11 +8,7 @@
 import { ref } from 'vue'
 import Homepage from './views/HomePage.vue'
 
-const isDarkMode = ref(false)
-function toggleDarkMode() {
-  isDarkMode.value = !isDarkMode.value
-  document.body.classList.toggle('dark', isDarkMode.value) // ✅ ini bikin semua dark style jalan
-}
+
 
 </script>
 
@@ -39,57 +18,11 @@ function toggleDarkMode() {
   position: relative;
   min-height: 100vh;
   transition: background 0.3s ease;
+
 }
 
-.light {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.dark {
-  background-color: #1e1e1e;
-  color: #ffffff;
-}
-
-.dark input, .dark textarea { color: white; background-color: #333; }
 
 
-.header {
-  position: sticky;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  background-color: inherit;
-  z-index: 10;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.logo {
-  width: 40px;
-  height: auto;
-}
-
-.main-title {
-  font-size: 1.5rem;
-  color: #d32f2f;
-  margin: 0;
-}
-
-.toggle-dark {
-  background: transparent;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  padding: 4px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
 .form-wrapper {
   padding: 1rem;
