@@ -52,17 +52,17 @@
 
       <!-- Pelanggan: Ingin dihubungi? -->
       <div v-if="role === 'customer'" class="follow-up-group">
-        <label class="follow-up-label">Apakah Anda ingin dihubungi untuk tindak lanjut? *</label>
-        <div class="follow-up-options">
-          <label :class="{ selected: form.tindakLanjut === 'Ya' }">
-            <input type="radio" value="Ya" v-model="form.tindakLanjut" required /> Ya
-          </label>
-          <label :class="{ selected: form.tindakLanjut === 'Tidak' }">
-            <input type="radio" value="Tidak" v-model="form.tindakLanjut" /> Tidak
-          </label>
-          <label :class="{ selected: form.tindakLanjut === 'Mungkin' }">
-            <input type="radio" value="Mungkin" v-model="form.tindakLanjut" /> Mungkin
-          </label>
+         <label class="follow-up-label">Apakah Anda ingin dihubungi untuk tindak lanjut? *</label>
+  <div class="follow-up-options">
+    <label :class="{ selected: form.tindakLanjut === 'Ya' }">
+      <input type="radio" value="Ya" v-model="form.tindakLanjut" required /> Ya
+    </label>
+    <label :class="{ selected: form.tindakLanjut === 'Tidak' }">
+      <input type="radio" value="Tidak" v-model="form.tindakLanjut" /> Tidak
+    </label>
+    <label :class="{ selected: form.tindakLanjut === 'Mungkin' }">
+      <input type="radio" value="Mungkin" v-model="form.tindakLanjut" /> Mungkin
+    </label>
         </div>
       </div>
 
@@ -342,8 +342,9 @@ textarea { resize: vertical; }
 }
 .follow-up-options {
   display: flex;
-  gap: 1rem;
   flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
 }
 
 .follow-up-options label {
@@ -359,8 +360,16 @@ textarea { resize: vertical; }
   font-size: 1rem;
   color: #333;
   user-select: none;
+  min-width: 100px;  /* <- Jaga lebar konsisten, tapi fleksibel */
+  justify-content: center;
+  flex-grow: 1;       /* <- Agar bisa menyesuaikan ruang */
 }
 
+@media (max-width: 480px) {
+  .follow-up-options label {
+    flex: 1 1 100%; /* turun ke bawah di layar kecil */
+  }
+}
 .follow-up-options label:hover {
   border-color: #d32f2f;
   background-color: #fff1f1;
