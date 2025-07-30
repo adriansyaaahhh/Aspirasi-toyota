@@ -250,6 +250,22 @@ async function submitForm() {
   font-size: 1.5rem;
   color: #d32f2f;
   margin: 0;
+  position: sticky;
+  top: 60px; /* agar tidak nabrak header logo */
+  background: white;
+  padding: 0.5rem 1rem;
+  z-index: 9;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+}
+/* Responsive untuk layar mobile */
+@media (max-width: 600px) {
+  .main-title {
+    font-size: 1.2rem;
+    padding: 0.4rem 0.8rem;
+    top: 56px;
+  }
 }
 
 .input-alert {
@@ -276,7 +292,7 @@ async function submitForm() {
 
 .form-aspirasi {
   background: #fff;
-  padding: 1.5rem;
+  padding: 1 rem;
   border-radius: 16px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   max-width: 600px;
@@ -285,16 +301,16 @@ async function submitForm() {
 .form-title {
   text-align: center;
   color: #d32f2f;
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
 }
 input, select, textarea {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   margin-bottom: 1rem;
   border-radius: 10px;
   border: 1px solid #ccc;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 textarea { resize: vertical; }
 .radio-group {
@@ -344,8 +360,8 @@ textarea { resize: vertical; }
   width: 100%;
   background-color: #d32f2f;
   color: white;
-  padding: 12px;
-  font-size: 1rem;
+  padding: 10px;
+  font-size: 0.95rem;
   border-radius: 10px;
   border: none;
   cursor: pointer;
@@ -406,7 +422,7 @@ textarea { resize: vertical; }
 
 .follow-up-label {
   display: block;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   margin-bottom: 0.8rem;
   color: #111;
@@ -425,8 +441,8 @@ textarea { resize: vertical; }
 
 .follow-option {
   flex: 1 1 100px;
-  max-width: 120px;
-  padding: 12px;
+  max-width: 100px;
+  padding: 8px;
   border: 2px solid #ccc;
   border-radius: 12px;
   background: #fafafa;
