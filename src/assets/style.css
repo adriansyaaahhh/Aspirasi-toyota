@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #fff;
+  transition: background 0.3s, color 0.3s;
+}
+/* Placeholder dan teks input tetap terlihat di dark mode */
+body.dark .form-aspirasi input,
+body.dark .form-aspirasi select,
+body.dark .form-aspirasi textarea {
+  background-color: #af0c0c;
+  color: #eee;
+  border: 1px solid #555;
+}
+
+body.dark .form-aspirasi input::placeholder,
+body.dark .form-aspirasi textarea::placeholder {
+  color: #ccc;
+  opacity: 0.7;
+}
+
+/* Tombol kembali (← Kembali) */
+
+
+body.dark .btn-kembali {
+  color: #ef5350;
+}
+
+body.dark {
+  background-color: #121212;
+  color: #eee;
+}
+
+.app-wrapper {
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 80px;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 10px 20px;
+  z-index: 1000;
+  border-bottom: 1px solid #ddd;
+}
+
+body.dark .sticky-header {
+  background-color: #1e1e1e;
+}
+
+.logo {
+  height: 40px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.judul {
+  font-size: 20px;
+  flex: 1;
+}
+
+.toggle-mode {
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+.form-aspirasi {
+  max-width: 600px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(200, 0, 0, 0.2);
+}
+
+body.dark .form-aspirasi {
+  background-color: #2a2a2a;
+}
+
+.form-aspirasi input,
+.form-aspirasi select,
+.form-aspirasi textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-aspirasi button {
+  padding: 12px;
+  background-color: #d32f2f;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.form-aspirasi button:hover {
+  background-color: #b71c1c;
+}
+
+.bg-svg {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+}
