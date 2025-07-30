@@ -38,8 +38,11 @@
         <select v-model="form.layanan">
           <option disabled value="">Pilih layanan</option>
           <option>Servis</option>
-          <option>Jual-Beli</option>
-          <option>Test Drive</option>
+          <option>Sales</option>
+          <option>Sparepart</option>
+          <option>Tukar Tambah</option>
+          <option>Internal Toyota</option>
+          <option>Lain lain</option>
         </select>
       </template>
 
@@ -250,13 +253,12 @@ async function submitForm() {
   font-size: 1.5rem;
   color: #d32f2f;
   margin: 0;
-  position: sticky;
   top: 60px; /* agar tidak nabrak header logo */
   background: white;
   padding: 0.5rem 1rem;
   z-index: 9;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  box-shadow: none;
   border-radius: 6px;
 }
 /* Responsive untuk layar mobile */
