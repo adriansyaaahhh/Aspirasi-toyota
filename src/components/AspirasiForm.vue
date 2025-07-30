@@ -347,41 +347,74 @@ textarea { resize: vertical; }
 .follow-up-options {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   gap: 1rem;
   flex-wrap: wrap;
 }
 
 .follow-option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  flex: 1 1 100px;
+  max-width: 120px;
+  padding: 12px;
   border: 2px solid #ccc;
-  border-radius: 30px;
-  padding: 10px 20px;
-  background-color: #fafafa;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-  min-width: 110px;
+  border-radius: 12px;
+  background: #fafafa;
   text-align: center;
-  flex: 1 1 30%;
-  max-width: 140px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
 }
 
 .follow-option.selected {
   border-color: #d32f2f;
-  background-color: #ffe5e5;
+  background: #ffe5e5;
+  font-weight: bold;
   color: #b71c1c;
-  font-weight: 600;
 }
 
 .follow-option input[type="radio"] {
+
+
+
+  border: 2px solid #d32f2f;
+  border-radius: 50%;
+  outline: none;
+  margin-right: 8px;
+  position: relative;
+  top: 3px;
+  cursor: pointer;
   accent-color: #d32f2f;
   transform: scale(1.2);
 }
 
+.follow-option input[type="radio"]:checked::before {
+    content: '';    
+    width: 10px;
+    height: 10px;
+    background: #d32f2f;
+    border-radius: 50%;
+    margin: auto;
+    position: relative;
+    top: 4px;
+    left: 4px;
+    accent-color: #d32f2f;
+  transform: scale(1.2);
+}
+
+.follow-up-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #fafafa;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-size: 1rem;
+  color: #333;
+  user-select: none;
+}
 .follow-up-options label:hover {
   border-color: #d32f2f;
   background-color: #fff1f1;
@@ -391,7 +424,7 @@ textarea { resize: vertical; }
   border-color: #d32f2f;
   background-color: #ffe5e5;
   color: #b71c1c;
-  font-weight: 600;
+  font-weight: 200;
 }
 
 .follow-up-options input[type="radio"] {
