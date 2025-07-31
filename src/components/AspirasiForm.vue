@@ -162,7 +162,7 @@ async function submitForm() {
   }, 4000)
 
   const token = '8166400026:AAG9E_KMp0_H_wXgGNxtdeBkcsi-i7zurmk'
-  const chatId = '892508199'
+  const chatId = '-4902694582'
 
   let caption = ''
   if (props.role === 'customer') {
@@ -228,7 +228,6 @@ async function submitForm() {
 
 <style scoped>
 .header {
-  position: sticky;
   top: 0;
   display: flex;
   justify-content: space-between;
