@@ -4,8 +4,8 @@
     <!-- ✅ Hanya tampil saat belum pilih role -->
     <section v-if="!selectedRole" class="hero-section">
       <div class="hero-content">
-        <h1 class="hero-title">Selamat Datang di Sistem Aspirasi</h1>
-        <p class="hero-subtitle">Pilih peran Anda untuk melanjutkan ke form kepuasan pelanggan</p>
+        <h1 class="hero-title">Selamat Datang di Sistem Aspirasi Agung Toyota</h1>
+        <p class="hero-subtitle">Silahkan pilih apakah Anda pelanggan atau karyawan untuk melanjutkan.</p>
       </div>
     </section>
 

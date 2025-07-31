@@ -161,8 +161,8 @@ async function submitForm() {
     showSuccess.value = false
   }, 4000)
 
-  const token = '8166400026:AAG9E_KMp0_H_wXgGNxtdeBkcsi-i7zurmk'
-  const chatId = '-4902694582'
+  const token = '7388709190:AAH8Vo2OFy5qWpR7S12oEOJFrUVXevwv6xI'
+  const chatId = '-4855857854'
 
   let caption = ''
   if (props.role === 'customer') {
