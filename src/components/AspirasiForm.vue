@@ -57,7 +57,14 @@
 
       <!-- Upload Gambar -->
       <label>Upload Gambar</label>
-      <input  ref="fileInput" type="file" multiple accept="image/*" @change="handleFileChange" />
+      <input
+  ref="fileInput"
+  type="file"
+  multiple
+  accept="image/*"
+  capture="environment"
+  @change="handleFileChange"
+/>
       <div class="preview-wrapper">
         <div v-for="(img, index) in previewGambar" :key="index" class="preview-box">
           <img :src="img" alt="Preview" class="preview-img" />
