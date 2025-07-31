@@ -57,36 +57,8 @@
 
       <!-- Upload Gambar -->
       <label>Upload Gambar</label>
-      <div v-if="isAndroid">
-        <button type="button" class="upload-btn" @click="showAndroidOptions = !showAndroidOptions">
-          📁 Pilih File
-        </button>
-
-        <div v-if="showAndroidOptions" class="android-options">
-          <button type="button" @click="triggerFile('camera')">📷 Ambil Foto</button>
-          <button type="button" @click="triggerFile('gallery')">🖼️ Pilih dari Galeri</button>
-        </div>
-      </div>
-
-      <!-- iOS or default devices -->
-      <div v-else>
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          @change="handleFileChange"
-        />
-      </div>
-
-      <input
-        ref="fileInput"
-        type="file"
-        accept="image/*"
-        multiple
-        style="display: none"
-        @change="handleFileChange"
-      />
-
+      <input  ref="fileInput" type="file" multiple accept="image/*" @change="handleFileChange" />
+      
       <div class="preview-wrapper">
         <div v-for="(img, index) in previewGambar" :key="index" class="preview-box">
           <img :src="img" alt="Preview" class="preview-img" />
@@ -122,33 +94,8 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue'
-import { onMounted, watch,reactive } from 'vue'
-
-const isAndroid = ref(false)
-const showAndroidOptions = ref(false)
 
 
-onMounted(() => {
-  isAndroid.value = /android/i.test(navigator.userAgent)
-})
-
-const cameraInput = ref(null)
-const galleryInput = ref(null)
-
-
-function triggerFile(source) {
-  showAndroidOptions.value = false
-  if (fileInput.value) {
-    if (source === 'camera') {
-      fileInput.value.setAttribute('accept', 'image/*')
-      fileInput.value.setAttribute('capture', 'environment')
-    } else {
-      fileInput.value.setAttribute('accept', 'image/*')
-      fileInput.value.removeAttribute('capture')
-    }
-    fileInput.value.click()
-  }
-}
 
 const props = defineProps({ role: String })
 const emit = defineEmits(['kembaliKeRole'])
@@ -282,47 +229,6 @@ async function submitForm() {
 </script>
 
 <style scoped>
-
-.image-upload-toggle {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 1rem;
-}
-.upload-btn {
-  background-color: #d32f2f;
-  color: white;
-  padding: 8px 16px;
-  margin-bottom: 1rem;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.95rem;
-}
-
-.android-options {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 1rem;
-}
-
-.android-options button {
-  flex: 1;
-  background-color: #f5f5f5;
-  border: 2px solid #ccc;
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.android-options button:hover {
-  border-color: #d32f2f;
-  background-color: #fff1f1;
-  color: #b71c1c;
-}
-.upload-btn:hover {
-  background-color: #e0e0e0;
-}
 .header {
   top: 0;
   display: flex;
