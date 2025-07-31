@@ -289,14 +289,36 @@ async function submitForm() {
   margin-bottom: 1rem;
 }
 .upload-btn {
-  flex: 1;
-  padding: 8px 10px;
-  font-size: 0.95rem;
-  border: 1px solid #ccc;
+  background-color: #d32f2f;
+  color: white;
+  padding: 8px 16px;
+  margin-bottom: 1rem;
   border-radius: 10px;
-  background: #f5f5f5;
+  border: none;
   cursor: pointer;
-  transition: background 0.3s;
+  font-size: 0.95rem;
+}
+
+.android-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.android-options button {
+  flex: 1;
+  background-color: #f5f5f5;
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.android-options button:hover {
+  border-color: #d32f2f;
+  background-color: #fff1f1;
+  color: #b71c1c;
 }
 .upload-btn:hover {
   background-color: #e0e0e0;
