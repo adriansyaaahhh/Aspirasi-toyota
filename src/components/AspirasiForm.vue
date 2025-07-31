@@ -57,14 +57,35 @@
 
       <!-- Upload Gambar -->
       <label>Upload Gambar</label>
-      <div class="image-upload-toggle" v-if="isAndroid">
-  <button type="button" class="upload-btn" @click="openCamera">📷 Ambil Foto</button>
-  <button type="button" class="upload-btn" @click="openGallery">🖼️ Pilih dari Galeri</button>
-</div>
-      <input  ref="fileInput" type="file" multiple accept="image/*" @change="handleFileChange" />
-      <!-- input hidden untuk digunakan oleh kedua tombol -->
-<input ref="cameraInput" type="file" accept="image/*" capture="environment" style="display:none" @change="handleFileChange" />
-<input ref="galleryInput" type="file" accept="image/*" style="display:none" @change="handleFileChange" />
+      <div v-if="isAndroid">
+        <button type="button" class="upload-btn" @click="showAndroidOptions = !showAndroidOptions">
+          📁 Pilih File
+        </button>
+
+        <div v-if="showAndroidOptions" class="android-options">
+          <button type="button" @click="triggerFile('camera')">📷 Ambil Foto</button>
+          <button type="button" @click="triggerFile('gallery')">🖼️ Pilih dari Galeri</button>
+        </div>
+      </div>
+
+      <!-- iOS or default devices -->
+      <div v-else>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          @change="handleFileChange"
+        />
+      </div>
+
+      <input
+        ref="fileInput"
+        type="file"
+        accept="image/*"
+        multiple
+        style="display: none"
+        @change="handleFileChange"
+      />
 
       <div class="preview-wrapper">
         <div v-for="(img, index) in previewGambar" :key="index" class="preview-box">
@@ -101,9 +122,11 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue'
-import { onMounted } from 'vue'
+import { onMounted, watch,reactive } from 'vue'
 
 const isAndroid = ref(false)
+const showAndroidOptions = ref(false)
+
 
 onMounted(() => {
   isAndroid.value = /android/i.test(navigator.userAgent)
@@ -112,14 +135,20 @@ onMounted(() => {
 const cameraInput = ref(null)
 const galleryInput = ref(null)
 
-function openCamera() {
-  cameraInput.value && cameraInput.value.click()
-}
 
-function openGallery() {
-  galleryInput.value && galleryInput.value.click()
+function triggerFile(source) {
+  showAndroidOptions.value = false
+  if (fileInput.value) {
+    if (source === 'camera') {
+      fileInput.value.setAttribute('accept', 'image/*')
+      fileInput.value.setAttribute('capture', 'environment')
+    } else {
+      fileInput.value.setAttribute('accept', 'image/*')
+      fileInput.value.removeAttribute('capture')
+    }
+    fileInput.value.click()
+  }
 }
-
 
 const props = defineProps({ role: String })
 const emit = defineEmits(['kembaliKeRole'])
