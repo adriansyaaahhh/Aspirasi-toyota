@@ -57,19 +57,21 @@
 
       <!-- Upload Gambar -->
       <label>Upload Gambar</label>
-      <input
-  ref="fileInput"
-  type="file"
-  multiple
-  accept="image/*"
-  capture="environment"
-  @change="handleFileChange"
-/>
+      <div class="image-upload-toggle" v-if="isAndroid">
+  <button type="button" class="upload-btn" @click="openCamera">📷 Ambil Foto</button>
+  <button type="button" class="upload-btn" @click="openGallery">🖼️ Pilih dari Galeri</button>
+</div>
+      <input  ref="fileInput" type="file" multiple accept="image/*" @change="handleFileChange" />
+      <!-- input hidden untuk digunakan oleh kedua tombol -->
+<input ref="cameraInput" type="file" accept="image/*" capture="environment" style="display:none" @change="handleFileChange" />
+<input ref="galleryInput" type="file" accept="image/*" style="display:none" @change="handleFileChange" />
+
       <div class="preview-wrapper">
         <div v-for="(img, index) in previewGambar" :key="index" class="preview-box">
           <img :src="img" alt="Preview" class="preview-img" />
           <button type="button" class="remove-btn" @click="hapusGambar(index)">×</button>
         </div>
+        
       </div>
 
       <!-- Pelanggan: Ingin dihubungi? -->
@@ -99,7 +101,24 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue'
+import { onMounted } from 'vue'
 
+const isAndroid = ref(false)
+
+onMounted(() => {
+  isAndroid.value = /android/i.test(navigator.userAgent)
+})
+
+const cameraInput = ref(null)
+const galleryInput = ref(null)
+
+function openCamera() {
+  cameraInput.value && cameraInput.value.click()
+}
+
+function openGallery() {
+  galleryInput.value && galleryInput.value.click()
+}
 
 
 const props = defineProps({ role: String })
@@ -234,6 +253,25 @@ async function submitForm() {
 </script>
 
 <style scoped>
+
+.image-upload-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.upload-btn {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f5f5f5;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.upload-btn:hover {
+  background-color: #e0e0e0;
+}
 .header {
   top: 0;
   display: flex;
