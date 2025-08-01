@@ -89,6 +89,15 @@
           style="display: none;"
         />
         
+        <input 
+          ref="galleryInput" 
+          type="file" 
+          multiple
+          accept="image/*"
+          @change="handleFileChange" 
+          style="display: none;"
+        />
+        
         <!-- Button yang terlihat untuk Android -->
         <button type="button" class="android-file-btn" @click="showAndroidOptions">
           📁 Pilih File
@@ -196,6 +205,7 @@ const gambarFiles = ref([])
 const previewGambar = ref([])
 const fileInput = ref(null)
 const cameraInput = ref(null)
+const galleryInput = ref(null)
 
 // Fungsi untuk Android - mencegah file picker default
 function handleAndroidFileClick(e) {
@@ -223,11 +233,7 @@ function selectCamera() {
 function selectGallery() {
   closeOptions()
   setTimeout(() => {
-    // Reset input to allow gallery selection
-    const input = fileInput.value
-    input.accept = "image/*"
-    input.removeAttribute('capture')
-    input.click()
+    galleryInput.value.click()
   }, 100)
 }
 
@@ -241,11 +247,10 @@ function selectFiles() {
 function hapusGambar(index) {
   gambarFiles.value.splice(index, 1)
   previewGambar.value.splice(index, 1)
-  if (gambarFiles.value.length === 0 && fileInput.value) {
-    fileInput.value.value = ''
-  }
-  if (gambarFiles.value.length === 0 && cameraInput.value) {
-    cameraInput.value.value = ''
+  if (gambarFiles.value.length === 0) {
+    if (fileInput.value) fileInput.value.value = ''
+    if (cameraInput.value) cameraInput.value.value = ''
+    if (galleryInput.value) galleryInput.value.value = ''
   }
 }
 
