@@ -57,14 +57,74 @@
 
       <!-- Upload Gambar -->
       <label>Upload Gambar</label>
-      <input  ref="fileInput" type="file" multiple accept="image/*" @change="handleFileChange" />
+      
+      <!-- Input file untuk iOS (behavior default) -->
+      <input 
+        v-if="isIOS" 
+        ref="fileInput" 
+        type="file" 
+        multiple 
+        accept="image/*" 
+        @change="handleFileChange" 
+      />
+      
+      <!-- Input file tersembunyi untuk Android -->
+      <template v-else>
+        <input 
+          ref="fileInput" 
+          type="file" 
+          multiple 
+          accept="image/*" 
+          @change="handleFileChange" 
+          @click="handleAndroidFileClick"
+          style="display: none;"
+        />
+        
+        <input 
+          ref="cameraInput" 
+          type="file" 
+          accept="image/*" 
+          capture="environment"
+          @change="handleFileChange" 
+          style="display: none;"
+        />
+        
+        <!-- Button yang terlihat untuk Android -->
+        <button type="button" class="android-file-btn" @click="showAndroidOptions">
+          📁 Pilih File
+          <span class="file-status">{{ previewGambar.length > 0 ? `${previewGambar.length} file dipilih` : 'tidak ada file yang dipilih' }}</span>
+        </button>
+      </template>
       
       <div class="preview-wrapper">
         <div v-for="(img, index) in previewGambar" :key="index" class="preview-box">
           <img :src="img" alt="Preview" class="preview-img" />
           <button type="button" class="remove-btn" @click="hapusGambar(index)">×</button>
         </div>
-        
+      </div>
+
+      <!-- Android Options Modal -->
+      <div v-if="showOptions && !isIOS" class="modal-overlay" @click="closeOptions">
+        <div class="modal-content" @click.stop>
+          <div class="modal-header">
+            <h3>Pilih Sumber Gambar</h3>
+            <button class="modal-close" @click="closeOptions">×</button>
+          </div>
+          <div class="option-list">
+            <button class="option-item" @click="selectCamera">
+              <span class="option-icon">📷</span>
+              <span class="option-text">Ambil Foto</span>
+            </button>
+            <button class="option-item" @click="selectGallery">
+              <span class="option-icon">🖼️</span>
+              <span class="option-text">Pilih dari Galeri</span>
+            </button>
+            <button class="option-item" @click="selectFiles">
+              <span class="option-icon">📁</span>
+              <span class="option-text">Pilih File</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Pelanggan: Ingin dihubungi? -->
@@ -86,16 +146,13 @@
   </div>
 </div>
 
-
       <button type="submit" class="submit-btn">Kirim Aspirasi</button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue'
-
-
+import { ref, defineProps, defineEmits, onMounted } from 'vue'
 
 const props = defineProps({ role: String })
 const emit = defineEmits(['kembaliKeRole'])
@@ -115,6 +172,14 @@ const form = ref({
 })
 const teleponError = ref(false)
 const showSuccess = ref(false)
+const isIOS = ref(false)
+const showOptions = ref(false)
+
+// Deteksi platform
+onMounted(() => {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera
+  isIOS.value = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream
+})
 
 function validateTelepon() {
   const angkaRegex = /^[0-9]*$/
@@ -130,12 +195,57 @@ function onlyNumber(e) {
 const gambarFiles = ref([])
 const previewGambar = ref([])
 const fileInput = ref(null)
+const cameraInput = ref(null)
+
+// Fungsi untuk Android - mencegah file picker default
+function handleAndroidFileClick(e) {
+  e.preventDefault()
+  showAndroidOptions()
+}
+
+// Show Android options modal
+function showAndroidOptions() {
+  showOptions.value = true
+}
+
+function closeOptions() {
+  showOptions.value = false
+}
+
+// Android option handlers
+function selectCamera() {
+  closeOptions()
+  setTimeout(() => {
+    cameraInput.value.click()
+  }, 100)
+}
+
+function selectGallery() {
+  closeOptions()
+  setTimeout(() => {
+    // Reset input to allow gallery selection
+    const input = fileInput.value
+    input.accept = "image/*"
+    input.removeAttribute('capture')
+    input.click()
+  }, 100)
+}
+
+function selectFiles() {
+  closeOptions()
+  setTimeout(() => {
+    fileInput.value.click()
+  }, 100)
+}
 
 function hapusGambar(index) {
   gambarFiles.value.splice(index, 1)
   previewGambar.value.splice(index, 1)
-    if (gambarFiles.value.length === 0 && fileInput.value) {
+  if (gambarFiles.value.length === 0 && fileInput.value) {
     fileInput.value.value = ''
+  }
+  if (gambarFiles.value.length === 0 && cameraInput.value) {
+    cameraInput.value.value = ''
   }
 }
 
@@ -147,9 +257,10 @@ function handleFileChange(event) {
     reader.onload = (e) => previewGambar.value.push(e.target.result)
     reader.readAsDataURL(file)
   }
+  
+  // Reset input values setelah memproses file
+  event.target.value = ''
 }
-
-
 
 async function submitForm() {
   if (!form.value.komentar.trim()) {
@@ -254,7 +365,7 @@ async function submitForm() {
   font-size: 1.5rem;
   color: #d32f2f;
   margin: 0;
-  top: 60px; /* agar tidak nabrak header logo */
+  top: 60px;
   background: white;
   padding: 0.5rem 1rem;
   z-index: 9;
@@ -262,7 +373,7 @@ async function submitForm() {
   box-shadow: none;
   border-radius: 6px;
 }
-/* Responsive untuk layar mobile */
+
 @media (max-width: 600px) {
   .main-title {
     font-size: 1.2rem;
@@ -286,27 +397,27 @@ async function submitForm() {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Animasi agar alert muncul lembut */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-
 .form-aspirasi {
   background: #fff;
-  padding: 1 rem;
+  padding: 1rem;
   border-radius: 16px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   max-width: 600px;
   margin: auto;
 }
+
 .form-title {
   text-align: center;
   color: #d32f2f;
   margin-bottom: 0.8rem;
   font-size: 1rem;
 }
+
 input, select, textarea {
   width: 100%;
   padding: 8px;
@@ -315,23 +426,155 @@ input, select, textarea {
   border: 1px solid #ccc;
   font-size: 0.95rem;
 }
+
 textarea { resize: vertical; }
-.radio-group {
-  display: flex;
-  gap: 15px;
+
+/* Android File Button */
+.android-file-btn {
+  width: 100%;
+  padding: 12px;
   margin-bottom: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
 }
+
+.android-file-btn:hover {
+  border-color: #d32f2f;
+  background: #fafafa;
+}
+
+.file-status {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 1000;
+  animation: modalFadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 16px 16px 0 0;
+  padding: 0;
+  animation: modalSlideUp 0.3s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.option-list {
+  padding: 8px 0 24px;
+}
+
+.option-item {
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 1rem;
+}
+
+.option-item:hover {
+  background: #f8f8f8;
+}
+
+.option-item:active {
+  background: #f0f0f0;
+}
+
+.option-icon {
+  font-size: 24px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.option-text {
+  color: #333;
+  font-weight: 500;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
 .preview-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 1rem;
 }
+
 .preview-box {
   position: relative;
   width: 100px;
   height: 100px;
 }
+
 .preview-img {
   width: 100%;
   height: 100%;
@@ -339,6 +582,7 @@ textarea { resize: vertical; }
   border-radius: 8px;
   border: 1px solid #ccc;
 }
+
 .remove-btn {
   position: absolute;
   top: 5px;
@@ -369,6 +613,7 @@ textarea { resize: vertical; }
   border: none;
   cursor: pointer;
 }
+
 .back-btn {
   background: none;
   border: none;
@@ -389,36 +634,6 @@ textarea { resize: vertical; }
   background: rgba(211, 47, 47, 0.1);
 }
 
-
-.peran-toggle {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.radio-group {
-  margin-bottom: 1rem;
-}
-
-.radio-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-.follow-up-options input[type="radio"] {
-  accent-color: #d32f2f;
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  flex-shrink: 0;
-}
-.radio-options {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
 .follow-up-group {
   margin-bottom: 1.5rem;
 }
@@ -430,16 +645,12 @@ textarea { resize: vertical; }
   margin-bottom: 0.8rem;
   color: #111;
 }
-.dark .follow-up-label {
-  color: #fff; 
-}
+
 .follow-up-options {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
   justify-content: flex-start;  
+  flex-wrap: wrap;
   gap: 1rem;
-
 }
 
 .follow-option {
@@ -463,9 +674,6 @@ textarea { resize: vertical; }
 }
 
 .follow-option input[type="radio"] {
-
-
-
   border: 2px solid #d32f2f;
   border-radius: 50%;
   outline: none;
@@ -474,20 +682,6 @@ textarea { resize: vertical; }
   top: 3px;
   cursor: pointer;
   accent-color: #d32f2f;
-  transform: scale(1.2);
-}
-
-.follow-option input[type="radio"]:checked::before {
-    content: '';    
-    width: 10px;
-    height: 10px;
-    background: #d32f2f;
-    border-radius: 50%;
-    margin: auto;
-    position: relative;
-    top: 4px;
-    left: 4px;
-    accent-color: #d32f2f;
   transform: scale(1.2);
 }
 
@@ -505,6 +699,7 @@ textarea { resize: vertical; }
   color: #333;
   user-select: none;
 }
+
 .follow-up-options label:hover {
   border-color: #d32f2f;
   background-color: #fff1f1;
@@ -517,22 +712,11 @@ textarea { resize: vertical; }
   font-weight: 200;
 }
 
-.follow-up-options input[type="radio"] {
-  accent-color: #d32f2f;
-  transform: scale(1.2);
-}
-
 .input-error {
   border-color: red;
   background-color: #ffe5e5;
 }
 
-.error-message {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
-}
 .toast {
   position: fixed;
   top: 20px;
@@ -547,6 +731,7 @@ textarea { resize: vertical; }
   transition: all 0.3s ease;
   opacity: 0.95;
 }
+
 .success-toast {
   background-color: #4caf50;
   color: white;
