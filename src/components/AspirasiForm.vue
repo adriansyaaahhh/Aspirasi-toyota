@@ -139,20 +139,20 @@
       <!-- Pelanggan: Ingin dihubungi? -->
 <div class="follow-up-group" v-if="role === 'customer'">
   <label class="follow-up-label">Apakah Anda ingin dihubungi untuk tindak lanjut? *</label>
-  <div class="follow-up-options">
-    <label class="follow-option" :class="{ selected: form.tindakLanjut === 'Ya' }">
-      <input type="radio" value="Ya" v-model="form.tindakLanjut" required />
-      <span>Ya</span>
-    </label>
-    <label class="follow-option" :class="{ selected: form.tindakLanjut === 'Tidak' }">
-      <input type="radio" value="Tidak" v-model="form.tindakLanjut" />
-      <span>Tidak</span>
-    </label>
-    <label class="follow-option" :class="{ selected: form.tindakLanjut === 'Mungkin' }">
-      <input type="radio" value="Mungkin" v-model="form.tindakLanjut" />
-      <span>Mungkin</span>
-    </label>
-  </div>
+<div class="follow-up-options">
+  <label class="follow-option" :class="{ selected: form.tindakLanjut === 'Ya' }">
+    <input type="radio" value="Ya" v-model="form.tindakLanjut" required />
+    <span>Ya</span>
+  </label>
+  <label class="follow-option" :class="{ selected: form.tindakLanjut === 'Tidak' }">
+    <input type="radio" value="Tidak" v-model="form.tindakLanjut" />
+    <span>Tidak</span>
+  </label>
+  <label class="follow-option" :class="{ selected: form.tindakLanjut === 'Mungkin' }">
+    <input type="radio" value="Mungkin" v-model="form.tindakLanjut" />
+    <span>Mungkin</span>
+  </label>
+</div>
 </div>
 
       <button type="submit" class="submit-btn">Kirim Aspirasi</button>
@@ -640,7 +640,7 @@ textarea { resize: vertical; }
 }
 
 .follow-up-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .follow-up-label {
@@ -653,22 +653,27 @@ textarea { resize: vertical; }
 
 .follow-up-options {
   display: flex;
-  justify-content: flex-start;  
+  justify-content: space-between;
+  gap: 0.8rem;
   flex-wrap: wrap;
-  gap: 1rem;
 }
 
 .follow-option {
-  flex: 1 1 100px;
-  max-width: 100px;
-  padding: 8px;
+  flex: 1;
+  min-width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
   border: 2px solid #ccc;
-  border-radius: 12px;
-  background: #fafafa;
-  text-align: center;
+  border-radius: 10px;
+  background-color: #fafafa;
   cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
+  font-size: 1rem;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+  user-select: none;
 }
 
 .follow-option.selected {
@@ -677,17 +682,32 @@ textarea { resize: vertical; }
   font-weight: bold;
   color: #b71c1c;
 }
+.follow-option input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d32f2f;
+}
 
+.follow-option:hover {
+  border-color: #d32f2f;
+  background-color: #fff1f1;
+}
 .follow-option input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none; /* Hilangkan default Safari */
+  width: 18px;
+  height: 18px;
   border: 2px solid #d32f2f;
   border-radius: 50%;
-  outline: none;
-  margin-right: 8px;
+  display: inline-block;
   position: relative;
-  top: 3px;
   cursor: pointer;
-  accent-color: #d32f2f;
-  transform: scale(1.2);
+  background-color: #fff;
 }
 
 .follow-up-options label {
